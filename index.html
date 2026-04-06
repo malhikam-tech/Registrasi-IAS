@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAS - International Astronomy Science</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0a0f;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .cyber-font { font-family: 'Orbitron', sans-serif; }
+
+        /* Loading Animation */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: var(--dark-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .orbit-container {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            width: 30px;
+            height: 30px;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--neon-pink);
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            border-radius: 50%;
+            animation: rotate linear infinite;
+        }
+
+        .orbit-1 { width: 80px; height: 80px; animation-duration: 3s; }
+        .orbit-2 { width: 130px; height: 130px; animation-duration: 5s; }
+
+        .planet {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background: var(--neon-purple);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Form Styling */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        input, select, textarea {
+            background: rgba(0, 0, 0, 0.3) !important;
+            border: 1px solid rgba(157, 0, 255, 0.5) !important;
+            color: white !important;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--neon-pink) !important;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+        }
+
+        .neon-btn {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .neon-btn:hover {
+            box-shadow: 0 0 20px var(--neon-pink);
+            transform: translateY(-2px);
+        }
+
+        /* MEMBER CARD - PURE CSS */
+        .member-card-container {
+            width: 350px;
+            height: 500px;
+            background: #0f0f1a;
+            border: 4px solid #9d00ff;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,0,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .card-header {
+            font-size: 14px;
+            color: #ff00ff;
+            margin-bottom: 5px;
+            letter-spacing: 3px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #9d00ff;
+            padding-bottom: 10px;
+            width: 100%;
+        }
+
+        .avatar-placeholder {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ff00ff;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(157, 0, 255, 0.2);
+        }
+
+        .card-name {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .card-info {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .card-stats {
+            width: 100%;
+            text-align: left;
+            font-size: 10px;
+            margin-top: 20px;
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .stat-label { color: #9d00ff; }
+        .stat-value { color: #fff; }
+
+        .card-footer {
+            margin-top: auto;
+            font-size: 9px;
+            color: #666;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="orbit-container">
+            <div class="sun"></div>
+            <div class="orbit orbit-1"><div class="planet"></div></div>
+            <div class="orbit orbit-2"><div class="planet"></div></div>
+        </div>
+        <h2 class="cyber-font text-xl mt-8 tracking-widest text-pink-500 animate-pulse">MEMUAT SEMESTA...</h2>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="hidden max-w-2xl mx-auto">
+        
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="cyber-font text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 mb-2">IAS COMMUNITY</h1>
+            <p class="text-gray-400 tracking-widest uppercase text-sm">International Astronomy Science</p>
+            <div class="h-1 w-24 bg-pink-600 mx-auto mt-4"></div>
+        </header>
+
+        <!-- Page 1: Form -->
+        <div id="page-form" class="glass-card rounded-2xl p-6 md:p-10">
+            <form id="ias-form" onsubmit="handleForm(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Nama Lengkap</label>
+                    <input type="text" name="nama" required class="w-full p-3 rounded-lg">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Umur (Min 12)</label>
+                        <input type="number" name="umur" min="12" required class="w-full p-3 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Gender</label>
+                        <select name="gender" required class="w-full p-3 rounded-lg">
+                            <option value="">Pilih</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Status</label>
+                    <select name="status" required class="w-full p-3 rounded-lg">
+                        <option value="Pelajar">Pelajar</option>
+                        <option value="Mahasiswa">Mahasiswa</option>
+                        <option value="Berkeluarga">Berkeluarga</option>
+                        <option value="Bekerja">Bekerja</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Minat</label>
+                    <input type="text" name="minat" placeholder="Contoh: Astrofotografi, Kosmologi" required class="w-full p-3 rounded-lg">
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Pengetahuan Astronomi</label>
+                    <textarea name="pengetahuan" rows="2" placeholder="Apa yang Anda ketahui sejauh ini?" required class="w-full p-3 rounded-lg"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Alasan Bergabung</label>
+                    <textarea name="alasan" rows="2" required class="w-full p-3 rounded-lg"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-tighter text-pink-400 mb-2">Username TikTok</label>
+                    <input type="text" name="tiktok" placeholder="@username" required class="w-full p-3 rounded-lg">
+                </div>
+
+                <button type="submit" class="neon-btn w-full py-4 rounded-xl text-white mt-4">
+                    Hasilkan Member Card
+                </button>
+            </form>
+        </div>
+
+        <!-- Page 2: Member Card & Send -->
+        <div id="page-card" class="hidden flex flex-col items-center space-y-8">
+            <div id="member-card" class="member-card-container">
+                <div class="card-glow"></div>
+                <div class="card-header">MEMBERSHIP</div>
+                <div class="card-title">I.A.S</div>
+                
+                <div class="avatar-placeholder">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ff00ff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"/><path d="M12 7v10"/><path d="M7 12h10"/></svg>
+                </div>
+
+                <div class="card-name" id="display-nama">NAME HERE</div>
+                <div class="card-info" id="display-status">STATUS</div>
+
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">ID MEMBER:</span>
+                        <span class="stat-value" id="display-id">#IAS-2024-000</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">TIKTOK:</span>
+                        <span class="stat-value" id="display-tiktok">@user</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">SEKTOR:</span>
+                        <span class="stat-value">ASTRONOMI</span>
+                    </div>
+                </div>
+
+                <div class="card-footer">INTERNATIONAL ASTRONOMY SCIENCE - OFFICIAL MEMBER</div>
+            </div>
+
+            <div class="flex flex-col gap-3 w-full max-w-md">
+                <button onclick="downloadCard()" class="bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg border border-purple-500 transition">
+                    Unduh Kartu (PNG)
+                </button>
+                
+                <p class="text-center text-xs text-gray-500 mt-4 uppercase tracking-widest">Kirim Data ke Admin untuk Persetujuan</p>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="sendToWA('owner')" class="bg-green-600 hover:bg-green-500 p-3 rounded-lg text-sm font-bold flex flex-col items-center">
+                        <span>Kirim ke Owner</span>
+                        <span class="text-[10px] opacity-75">Bpk. Admin</span>
+                    </button>
+                    <button onclick="sendToWA('admin')" class="bg-green-600 hover:bg-green-500 p-3 rounded-lg text-sm font-bold flex flex-col items-center">
+                        <span>Kirim ke Admin</span>
+                        <span class="text-[10px] opacity-75">Sdr. Admin</span>
+                    </button>
+                </div>
+                
+                <button onclick="window.location.reload()" class="text-pink-400 text-sm mt-4 hover:underline">Isi Ulang Formulir</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let formData = {};
+
+        // Simulate Loading
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('main-content').classList.remove('hidden');
+            }, 3000);
+        };
+
+        function handleForm(e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            formData = Object.fromEntries(fd.entries());
+
+            // Update Card Display
+            document.getElementById('display-nama').innerText = formData.nama;
+            document.getElementById('display-status').innerText = formData.status.toUpperCase();
+            document.getElementById('display-tiktok').innerText = formData.tiktok;
+            
+            // Random ID
+            const randomId = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('display-id').innerText = `#IAS-2024-${randomId}`;
+
+            // Switch Page
+            document.getElementById('page-form').classList.add('hidden');
+            document.getElementById('page-card').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+
+        async function downloadCard() {
+            const card = document.getElementById('member-card');
+            const canvas = await html2canvas(card, {
+                backgroundColor: null,
+                scale: 2
+            });
+            
+            const link = document.createElement('a');
+            link.download = `IAS-Member-${formData.nama}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function sendToWA(target) {
+            const phone = target === 'owner' ? '6283176648725' : '6281330572141';
+            const text = `Halo Admin IAS, saya ingin mendaftar komunitas:%0A%0A` +
+                `*Nama:* ${formData.nama}%0A` +
+                `*Umur:* ${formData.umur}%0A` +
+                `*Gender:* ${formData.gender}%0A` +
+                `*Status:* ${formData.status}%0A` +
+                `*Minat:* ${formData.minat}%0A` +
+                `*Pengetahuan:* ${formData.pengetahuan}%0A` +
+                `*Alasan:* ${formData.alasan}%0A` +
+                `*Tiktok:* ${formData.tiktok}%0A%0A` +
+                `Mohon persetujuannya, terima kasih!`;
+
+            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>
+
